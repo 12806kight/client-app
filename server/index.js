@@ -17,18 +17,16 @@ const socketIO = require('socket.io')(http, {
 //Add this before the app.get() block
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
-    socket.on('disconnect', () => {
-      
+    
+    socket.on('message', (data) => {
+        socketIO.emit('messagerData', data);
+    })
 
-      socket.on('message', (data) => {
-        console.log(data);
-      })
-
-      socket.on('disconnect', ()=>{
+    socket.on('disconnect', ()=>{
         console.log('🔥: A user disconnected');
-      })
-    });
+    })
 });
+
 
 app.get('/api', (req, res) => {
   res.json({
